@@ -3,11 +3,6 @@ from roshelper.Catkin import Catkin
 from roshelper.Ros import Ros
 import cmd
 
-
-class PromptFormatter(object):
-    prompt = '> '
-
-
 class HelpFormatter(object):
 
     def printHelp(self, lineList, firstAsCaption=True):
@@ -47,7 +42,7 @@ class StdCommands(object):
         self.printStdoutCommandDispatcher(self.command_dispatcher)
 
 
-class InteractiveCommands(cmd.Cmd, HelpFormatter, PromptFormatter, StdCommands):
+class InteractiveCommands(cmd.Cmd, HelpFormatter, StdCommands):
     intro = "Interactive commands for ROS-AID-Tools"
 
     PARAMETER_WORKSPACE = object
@@ -95,7 +90,7 @@ class InteractiveCommands(cmd.Cmd, HelpFormatter, PromptFormatter, StdCommands):
         self.printHelp(['catkin WORKSPACE_PATH', 'switch to catkin tools for given workspace'])
 
 
-class CatkinCommands(cmd.Cmd, HelpFormatter, PromptFormatter, StdCommands):
+class CatkinCommands(cmd.Cmd, HelpFormatter, StdCommands):
 
     def __init__(self, catkin, completekey='tab', stdin=None, stdout=None):
         cmd.Cmd.__init__(self, completekey, stdin, stdout)
@@ -114,7 +109,7 @@ class CatkinCommands(cmd.Cmd, HelpFormatter, PromptFormatter, StdCommands):
         print 'workspace',
         print 'exist' if self.catkin.checkWorkspaceExist() else 'not available'
 
-class RosCommands(cmd.Cmd, HelpFormatter, PromptFormatter, StdCommands):
+class RosCommands(cmd.Cmd, HelpFormatter, StdCommands):
     def __init__(self, ros, completekey='tab', stdin=None, stdout=None):
         cmd.Cmd.__init__(self, completekey, stdin, stdout)
         assert isinstance(ros, Ros)
