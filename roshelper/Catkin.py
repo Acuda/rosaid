@@ -15,15 +15,26 @@ class Catkin(object):
     def initWorkspace(self):
         OSHelper.mkdirs(self.workspace_src_path)
 
-        self.command_dispatcher.sendCmd(DPAC.CMD.CD % self.workspace_src_path)
+        self.switchToSourceDirectory()
         self.command_dispatcher.sendCmd(DPAC.CMD.SOURCE % DPAC.PATH.GLOBAL_SOURCE_SETUP_FILE)
         self.command_dispatcher.sendCmd(DPAC.CMD.CATKIN_INIT_WORKSPACE)
+
+    def switchToSourceDirectory(self):
+        self.command_dispatcher.sendCmd(DPAC.CMD.CD % self.workspace_src_path)
+
+    def switchToWorkspaceDirectory(self):
+        self.command_dispatcher.sendCmd(DPAC.CMD.CD % self.workspace_path)
 
     def checkWorkspaceExist(self):
         return os.path.exists(self.workspace_path) and os.path.exists(self.workspace_src_path)
 
     def makeWorkspace(self):
-        self.command_dispatcher.sendCmd(DPAC.CMD.CD % self.workspace_path)
+        self.switchToWorkspaceDirectory()
         self.command_dispatcher.sendCmd(DPAC.CMD.CATKIN_MAKE)
+
+    def createPackage(self, package_name, dependencie_list):
+        assert isinstance(dependencie_list, list)
+        self.command_dispatcher.sendCmd(DPAC.CMD.CATKIN_CREATE_PACKAGE % (package_name, ' '.join(dependencie_list)))
+
 
 

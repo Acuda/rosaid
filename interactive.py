@@ -45,7 +45,7 @@ class StdCommands(object):
 class InteractiveCommands(cmd.Cmd, HelpFormatter, StdCommands):
     intro = "Interactive commands for ROS-AID-Tools"
 
-    PARAMETER_WORKSPACE = object
+    PARAMETER_WORKSPACE = object()
 
     def postcmd(self, stop, line):
         return cmd.Cmd.postcmd(self, stop, line)

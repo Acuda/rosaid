@@ -15,3 +15,4 @@ class Ros(object):
 
     def sourceGlobalSetup(self):
         self.command_dispatcher.sendCmd(DPAC.CMD.SOURCE % DPAC.PATH.GLOBAL_SOURCE_SETUP_FILE)
+

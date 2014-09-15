@@ -17,14 +17,19 @@ class CommandDispatcher(object):
             else:
                 args.append(command_args)
 
-        self.proc = Popen(args, shell=False, stdin=PIPE, stdout=PIPE, cwd=cwd)
+        self.proc = Popen(args, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=cwd)
         fcntl.fcntl(self.proc.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)  # switch to nonblocking mode
+        fcntl.fcntl(self.proc.stderr.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)  # switch to nonblocking mode
         self.outque = deque()
 
 
     def dataAvailable(self, ignore_stdin_que=False):
+        self.getDataFromStream(self.proc.stdout)
+        self.getDataFromStream(self.proc.stderr)
+
+    def getDataFromStream(self, stream, ignore_stdin_que=False):
         try:
-            data = self.proc.stdout.read().splitlines()
+            data = stream.read().splitlines()
             self.outque.extend(data)
             time.sleep(self.cmdSleepTime)
             return True
@@ -34,14 +39,22 @@ class CommandDispatcher(object):
             else:
                 raise ex
 
-    def getData(self, getAll=True):
-        self.waitData()
+    def getData(self, getAll=True, getAsList=False, skipWait=False):
+        if not skipWait:
+            self.waitData()
         if getAll:
-            data = os.linesep.join(self.outque)
+            if getAsList:
+                data = list(self.outque)
+            else:
+                data = os.linesep.join(self.outque)
             self.outque = deque()
             return data
         else:
-            return self.outque.popleft()
+
+            if len(self.outque) > 0:
+                return self.outque.popleft()
+            else:
+                return None
 
     def waitData(self):
         waitStartTime  = time.time()

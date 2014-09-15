@@ -10,6 +10,7 @@ class CMD(object):
     # CATKIN
     CATKIN_INIT_WORKSPACE = 'catkin_init_workspace'
     CATKIN_MAKE = 'catkin_make'
+    CATKIN_CREATE_PACKAGE = 'catkin_create_pkg %s %s'  # catkin_create_pkg [PACKAGE_NAME] [DEP1 DEP2 ...]
 
     # LINUX
     CD = 'cd %s'  # cd <target dir>
