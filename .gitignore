@@ -1,0 +1,8 @@
+# IDE STUFF # 
+#############
+.idea/
+
+# compiled source #
+###################
+*.pyc
+
