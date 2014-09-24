@@ -1,11 +1,18 @@
 class PATH(object):
+    # ROS
     GLOBAL_SOURCE_SETUP_FILE = '/opt/ros/hydro/setup.sh'
     WORKSPACE_SOURCE_SETUP_FILE = 'devel/setup.sh'
+
+    # CATKIN
     CATKIN_SOURCE_DIRECTORY = 'src'
+
+    # ROS-TEST
+    DEFAULT_PACKAGE_FOLDER = ['scripts', 'test']
 
 class CMD(object):
     # ROS
     SOURCE = 'source %s'  # source [sourced file]
+
 
     # CATKIN
     CATKIN_INIT_WORKSPACE = 'catkin_init_workspace'
