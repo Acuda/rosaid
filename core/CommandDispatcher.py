@@ -4,6 +4,7 @@ import os
 import time
 from collections import deque
 
+
 class CommandDispatcher(object):
     def __init__(self, command='/bin/bash', command_args=None, cwd=None, timeout=5, commandSleepTime=0.1):
         self.cmdSleepTime = commandSleepTime
@@ -11,11 +12,11 @@ class CommandDispatcher(object):
 
         args = list()
         args.append(command)
+
         if command_args:
-            if isinstance(command_args, list):
-                args.extend(command_args)
-            else:
-                args.append(command_args)
+            if not isinstance(command_args, list):
+                command_args = [command_args]
+            args.extend(command_args)
 
         self.proc = Popen(args, shell=False, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=cwd)
         fcntl.fcntl(self.proc.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)  # switch to nonblocking mode
@@ -74,3 +75,7 @@ class CommandDispatcher(object):
         self.proc.stdin.write(cmd)
         time.sleep(self.cmdSleepTime)  # waiting for not breaking the pipe
 
+if __name__ == '__main__':
+    cd = CommandDispatcher()
+    cd.sendCmd('ls -la')
+    print cd.getData()
